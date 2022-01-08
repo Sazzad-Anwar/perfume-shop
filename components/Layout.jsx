@@ -105,7 +105,7 @@ const Layout = ({ children }) => {
 
                 <div className="bg-gray-800 py-3 h-full">
                     <div className="container mx-auto">
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col lg:flex-row justify-between items-center">
                             <p className="text-white text-sm">© 2022, All rights reserved</p>
                             <p className="text-white text-sm">Developed By Zayan It Solutions</p>
                         </div>
