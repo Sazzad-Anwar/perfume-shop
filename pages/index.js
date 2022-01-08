@@ -261,7 +261,7 @@ export default function Home() {
                   <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
                 </div>
                 <Link href="/123">
-                  <a className='flex justify-center items-center w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
+                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
                    bg-gray-300 px-4 py-2'>Shop Now</a>
                 </Link>
               </div>
@@ -277,7 +277,7 @@ export default function Home() {
                   <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
                 </div>
                 <Link href="/123">
-                  <a className='flex justify-center items-center w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
+                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
                    bg-gray-300 px-4 py-2'>Shop Now</a>
                 </Link>
               </div>
@@ -293,7 +293,7 @@ export default function Home() {
                   <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
                 </div>
                 <Link href="/123">
-                  <a className='flex justify-center items-center w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
+                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
                    bg-gray-300 px-4 py-2'>Shop Now</a>
                 </Link>
               </div>
