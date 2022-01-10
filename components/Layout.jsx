@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
         <div>
             <Nav />
             {children}
-            <footer className="bg-gray-300 h-full">
+            <footer className="bg-gradient-to-r from-purple-800 to-purple-300 h-full text-white">
                 <div className="container mx-auto pt-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div>
@@ -77,22 +77,22 @@ const Layout = ({ children }) => {
                                 <li className="my-1">
                                     <div className="flex items-center h-12 w-full lg:w-96 bg-white">
                                         <input type="email" placeholder="Email" className="focus:outline-none h-full w-2/3 py-2 px-3" />
-                                        <button className="w-1/3 h-full flex justify-center items-center bg-gray-700 hover:bg-gray-500 normal-transition text-white">
+                                        <button className="w-1/3 h-full flex justify-center items-center bg-purple-800 hover:bg-gray-500 normal-transition text-white">
                                             <span>Send</span>
                                         </button>
                                     </div>
                                 </li>
                                 <li className="my-3 flex justify-between items-center lg:w-52 lg:mr-auto">
-                                    <a href="https://faceboook.com" className="text-base text-gray-800 hover:text-gray-700 normal-transition">
+                                    <a href="https://faceboook.com" className="text-base text-white hover:text-purple-800 normal-transition">
                                         <i className="bi bi-facebook text-3xl"></i>
                                     </a>
-                                    <a href="https://faceboook.com" className="text-base text-gray-800 hover:text-gray-700 normal-transition">
+                                    <a href="https://faceboook.com" className="text-base text-white hover:text-purple-800 normal-transition">
                                         <i className="bi bi-instagram text-3xl"></i>
                                     </a>
-                                    <a href="https://faceboook.com" className="text-base text-gray-800 hover:text-gray-700 normal-transition">
+                                    <a href="https://faceboook.com" className="text-base text-white hover:text-purple-800 normal-transition">
                                         <i className="bi bi-twitter text-3xl"></i>
                                     </a>
-                                    <a href="https://faceboook.com" className="text-base text-gray-800 hover:text-gray-700 normal-transition">
+                                    <a href="https://faceboook.com" className="text-base text-white hover:text-purple-800 normal-transition">
                                         <i className="bi bi-youtube text-3xl"></i>
                                     </a>
                                 </li>

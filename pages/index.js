@@ -7,13 +7,9 @@ import Nav from '../components/Nav'
 import { useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, EffectFade, Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination"
-import "swiper/css/navigation"
-import "swiper/css/effect-fade"
 import Link from 'next/link';
 import Layout from './../components/Layout';
+import Products from '../components/Products';
 
 export default function Home() {
 
@@ -31,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Swiper
-        modules={[Autoplay, EffectFade, Pagination, Navigation]}
+        modules={[Autoplay, EffectFade]}
         spaceBetween={30}
         slidesPerView={1}
         centeredSlides={true}
@@ -83,226 +79,9 @@ export default function Home() {
       </Swiper>
 
       {/* Top reviewed */}
-      <section className='my-16'>
-        <div className="container mx-auto">
-          <h1 className='text-xl lg:text-3xl font-semibold text-center mb-5'>Top Reviewed</h1>
-          <Swiper
-            modules={[Autoplay, Pagination, Navigation]}
-            spaceBetween={10}
-            autoplay={{
-              "delay": 3400,
-              "disableOnInteraction": false
-            }}
-            pagination={{ clickable: true }}
-            loop={true}
-            centeredSlides={true}
-            onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
-            breakpoints={{
-              640: {
-                width: 640,
-                slidesPerView: 1
-              },
-              768: {
-                width: 768,
-                slidesPerView: 2,
-              },
-              992: {
-                width: 992,
-                slidesPerView: 4,
-              },
-              1400: {
-                width: 1400,
-                slidesPerView: 5,
-              }
-            }}
-            className="mySwiper"
-          >
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-1.jpg" layout='intrinsic' height={150} width={150} alt='product-1' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
+      <Products heading="Top Reviewed" delay="3400" />
 
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-2.jpg" layout='intrinsic' height={150} width={150} alt='product-2' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
 
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-3.jpg" layout='intrinsic' height={150} width={150} alt='product-3' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-4.jpg" layout='intrinsic' height={150} width={150} alt='product-4' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-5.jpg" layout='intrinsic' height={150} width={150} alt='product-5' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide className="flex justify-center items-center">
-              <div className='relative h-96 w-52'>
-                <div className="flex justify-center items-center">
-                  <Image src="/product-1.jpg" layout='intrinsic' height={150} width={150} alt='product-1' />
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center">
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star-fill text-gray-600"></i>
-                    <i className="bi bi-star text-gray-600"></i>
-                  </div>
-                  <h4 className='text-base'>Coffee Bean Caffeine Eye Cream</h4>
-                  <p className='text-base'>$ 16.00</p>
-                  <button className='flex justify-center items-center w-full hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Add to basket</button>
-                </div>
-              </div>
-            </SwiperSlide>
-          </Swiper>
-        </div>
-      </section>
-
-      {/* category product */}
-      <section className="my-16">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className='w-full h-full'>
-              <div className='flex justify-center items-center'>
-                <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={791} width={700} alt="category-1" src="/WinterSkinCare_module.jpg" />
-              </div>
-              <div className="text-center">
-                <div className='flex flex-col'>
-                  <span className="text-base text-gray-500 mt-4 normal-transition">Layer Up !</span>
-                  <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
-                </div>
-                <Link href="/123">
-                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Shop Now</a>
-                </Link>
-              </div>
-            </div>
-
-            <div className='w-full h-full'>
-              <div className='flex justify-center items-center'>
-                <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={791} width={700} alt="category-1" src="/Allure_Award_Body_Scrubs_module_1-min.jpg" />
-              </div>
-              <div className="text-center">
-                <div className='flex flex-col'>
-                  <span className="text-base text-gray-500 mt-4 normal-transition">Layer Up !</span>
-                  <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
-                </div>
-                <Link href="/123">
-                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Shop Now</a>
-                </Link>
-              </div>
-            </div>
-
-            <div className='w-full h-full'>
-              <div className='flex justify-center items-center'>
-                <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={791} width={700} alt="category-1" src="/Burdock_Neem32oz_module.jpg" />
-              </div>
-              <div className="text-center">
-                <div className='flex flex-col'>
-                  <span className="text-base text-gray-500 mt-4 normal-transition">Layer Up !</span>
-                  <span className='text-xl font-semibold text-gray-500 normal-transition'>Winter Moisture Treatment</span>
-                </div>
-                <Link href="/123">
-                  <a className='flex justify-center items-center w-auto lg:w-1/3 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Shop Now</a>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* banner section */}
       <section className='my-16'>
         <div className="container mx-auto">
           <Link href="/banner-1">
@@ -310,6 +89,15 @@ export default function Home() {
               <Image className='intrinsic' src="/banner-1.jpg" height={450} width={1168} alt="banner-1" />
             </a>
           </Link>
+        </div>
+      </section>
+
+      {/* Hot Sale */}
+      <Products heading="Hot Sale" delay="4500" />
+
+      {/* banner section */}
+      <section className='my-16'>
+        <div className="container mx-auto">
           <Link href="/banner-1">
             <a className='w-full h-full flex justify-center items-center mb-10'>
               <Image className='intrinsic' src="/banner-2.jpg" height={450} width={1168} alt="banner-2" />
@@ -364,8 +152,8 @@ export default function Home() {
                     <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Read More</a>
+                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
+                   bg-purple-800 px-4 py-2'>Read More</a>
                   </Link>
                 </div>
               </div>
@@ -382,8 +170,8 @@ export default function Home() {
                     <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Read More</a>
+                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
+                   bg-purple-800 px-4 py-2'>Read More</a>
                   </Link>
                 </div>
               </div>
@@ -400,8 +188,8 @@ export default function Home() {
                     <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Read More</a>
+                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
+                   bg-purple-800 px-4 py-2'>Read More</a>
                   </Link>
                 </div>
               </div>
@@ -418,8 +206,8 @@ export default function Home() {
                     <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-gray-200 normal-transition
-                   bg-gray-300 px-4 py-2'>Read More</a>
+                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
+                   bg-purple-800 px-4 py-2'>Read More</a>
                   </Link>
                 </div>
               </div>

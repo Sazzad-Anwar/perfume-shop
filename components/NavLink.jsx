@@ -6,7 +6,7 @@ const NavLink = ({ href, exact, children, ...props }) => {
     const isActive = exact ? pathname === href : pathname.startsWith(href);
 
     if (isActive) {
-        props.className += ' border-b border-transparent hover:border-black normal-transition';
+        props.className += ' border-b border-transparent group-hover:border-white normal-transition';
     }
 
     return (
