@@ -1,27 +1,35 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import NavLink from "./NavLink"
 import { signOut, useSession } from 'next-auth/react';
 import fetcher from "./Fetcher"
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import Category from "./Category"
+import axios from "axios"
+import { GlobalContext } from "../Context/GlobalContext"
 
 const Nav = () => {
-
+    let { mutate } = useSWRConfig()
+    const { cart, removeFromCart } = useContext(GlobalContext)
     const authentication = useSession();
     const router = useRouter();
     const [searchOpen, setSearchOpen] = useState(false);
+    const [cartPanelHeight, setCartPanelHeight] = useState(0);
     const searchRef = useRef(null)
     const headerHeight = useRef(null);
+    const cartHeaderHeight = useRef(null);
+    const cartFooterHeight = useRef(null);
+    const cartPanel = useRef(null);
     const [navOpen, setNavOpen] = useState(false);
     const [isMobileHeight, setIsMobileHeight] = useState(false);
     const [stickyNav, setStickyNav] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
 
-    const { data, error } = useSWR('/api/v1/categories', fetcher);
+    const { data: categories, error } = useSWR(`/categories`, fetcher);
 
-    console.log(data)
+    const { data: cartData } = useSWR(`/cart`, fetcher);
 
     useEffect(() => {
         searchOpen && searchRef.current.focus();
@@ -34,7 +42,7 @@ const Nav = () => {
         });
 
         window !== undefined && window.addEventListener('scroll', () => {
-            if (window.scrollY > headerHeight.current.offsetHeight) {
+            if (headerHeight?.current?.offsetHeight && (window.scrollY > headerHeight?.current?.offsetHeight)) {
                 setStickyNav(true);
             } else {
                 setStickyNav(false);
@@ -47,7 +55,40 @@ const Nav = () => {
             setIsMobileHeight(true);
         }
 
-    }, [searchOpen, headerHeight])
+    }, [searchOpen, headerHeight]);
+
+    useEffect(() => {
+
+        if (cartOpen) {
+            document.body.style.overflowY = "hidden";
+            setCartPanelHeight(cartHeaderHeight?.current.offsetHeight + cartFooterHeight?.current.offsetHeight)
+        } else {
+            document.body.style.overflowY = "auto";
+        }
+
+    }, [cartOpen]);
+
+    const increaseQuantity = async (item) => {
+        cartData.data[cartData.data.indexOf(item)].quantity++;
+        mutate('/cart', cartData, false);
+        await axios.post('/cart', cartData);
+        mutate('/cart')
+    }
+
+    const decreaseQuantity = async (item) => {
+        cartData.data[cartData.data.indexOf(item)].quantity--;
+        mutate('/cart', cartData, false);
+        await axios.post('/cart', cartData);
+        mutate('/cart')
+    }
+
+    const removeItem = async (item) => {
+        removeFromCart(item);
+        cartData.data = cart.filter((_, index) => cart.indexOf(item) !== index);
+        mutate('/cart', cartData, false);
+        await axios.post(`/cart/`, cartData);
+        mutate('/cart')
+    }
 
     return (
         <div className="bg-gradient-to-r from-purple-800 to-purple-300">
@@ -67,26 +108,30 @@ const Nav = () => {
                     <div className="text-center">
                         {/* <Image src="/logo-2.png" height={300} width={1400} layout="intrinsic" alt="logo-img" /> */}
                         <h1>
-                            <span className="text-sm lg:text-3xl block text-white font-bold">PERFUME BANGLADESH</span>
-                            <span className="hidden lg:block text-base text-white font-medium">A House of Authentic Fragrance</span>
+                            <Link href="/">
+                                <a>
+                                    <span className="text-sm lg:text-3xl block text-white font-bold">PERFUME BANGLADESH</span>
+                                    <span className="hidden lg:block text-base text-white font-medium">A House of Authentic Fragrance</span>
+                                </a>
+                            </Link>
                         </h1>
                     </div>
                     <div className="justify-self-end flex items-center text-white">
                         <div className="mr-10 hidden lg:block">
-                            <h1 className="text-base font-semibold">Hello, Enthusiast</h1>
+                            <h1 className="text-base font-semibold text-white mb-0">Hello, Enthusiast</h1>
                             <div className="flex items-center">
                                 <Link href="/login">
-                                    <a className="text-xs hover:text-purple-800 uppercase normal-transition font-medium">Log In</a>
+                                    <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Log In</a>
                                 </Link>
                                 <span className='text-xs uppercase mx-1'>OR</span>
                                 <Link href="/register">
-                                    <a className="text-xs hover:text-purple-800 uppercase normal-transition font-medium">Register</a>
+                                    <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Register</a>
                                 </Link>
                             </div>
                         </div>
-                        <div className="relative cursor-pointer">
-                            <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-1 flex justify-center items-center text-white">
-                                0
+                        <div className="relative cursor-pointer w-7" onClick={() => setCartOpen(true)}>
+                            <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-2 flex justify-center items-center text-white">
+                                {cartData?.data?.length}
                             </span>
                             <i className="bi bi-bag text-3xl"></i>
                         </div>
@@ -99,12 +144,12 @@ const Nav = () => {
                     {navOpen && <i onClick={() => setNavOpen(!navOpen)} className="bi bi-x-lg text-3xl animate__animated animate__slideInLeft normal-transition absolute top-0 right-0 p-3 bg-purple-800 z-20"></i>}
                     <ul className={isMobileHeight ? `${isMobileHeight && navOpen ?
                         'list-none flex flex-col absolute top-0 left-0 bottom-0 w-full backdrop-blur-lg z-10 py-8 bg-white opacity-100 shadow-lg animate__animated animate__slideInLeft h-screen overflow-auto text-purple-800 container mx-auto' :
-                        'absolute top-0 bottom-0 -left-full animate__animated animate__slideInRight bg-white z-10'}` :
-                        'list-none flex lg:flex-row'}>
-                        {data?.data && data?.data.map(category => (
+                        'absolute top-0 bottom-0 -left-full animate__animated animate__slideInRight bg-white z-10'} mb-0` :
+                        'list-none flex lg:flex-row lg:items-center mb-0'}>
+                        {categories && categories.map(category => (
                             <li key={category.id} className="py-2 lg:py-0 px-2 group">
-                                <NavLink className="py-2 font-medium uppercase border-b border-transparent hover:text-purple-500 lg:hover:text-gray-300 hover:border-white normal-transition" href={`/categories/${category.name.toLowerCase()}`}>
-                                    <p>{category.name}</p>
+                                <NavLink className="py-2 text-white font-medium uppercase border-b border-transparent hover:text-purple-500 lg:hover:text-gray-300 hover:border-white normal-transition" href={`/categories/${category.name.toLowerCase()}`}>
+                                    <p className="mb-0">{category.name}</p>
                                 </NavLink>
                                 {category.subCategories.length ?
                                     <div className="hidden group-hover:block lg:absolute lg:left-0 lg:right-0 lg:z-40">
@@ -124,10 +169,82 @@ const Nav = () => {
                                 }
                             </li>
                         ))}
+
+                        {stickyNav && <div className="relative cursor-pointer w-7" onClick={() => setCartOpen(true)}>
+                            <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-2 flex justify-center items-center text-white">
+                                {cartData?.data.length}
+                            </span>
+                            <i className="bi bi-bag text-2xl"></i>
+                        </div>}
                     </ul>
                 </nav>
             </header>
             {isMobileHeight && <div style={{ height: headerHeight.current?.offsetHeight }} />}
+            {cartOpen &&
+                <div className="fixed inset-0 backdrop-blur-md z-20">
+                    <div className="absolute right-0 w-full lg:w-96 top-0 bottom-0 bg-white px-3 py-2  animate__animated animate__fadeInRight border border-purple-800">
+                        <div className="relative h-full">
+                            <div ref={cartHeaderHeight} className="flex justify-between items-center border-b border-purple-500 pb-3">
+                                <div />
+                                <h1 className="text-2xl font-semibold">Your Cart</h1>
+                                <div className="text-black h-4 w-4 flex justify-center items-center hover:from-purple-800 hover:bg-purple-800 normal-transition hover:text-white p-4">
+                                    <i className="bi bi-x-lg cursor-pointer" onClick={() => setCartOpen(false)}></i>
+                                </div>
+                            </div>
+                            <div
+                                ref={cartPanel}
+                                className="overflow-auto fixed pb-5 cartPanel"
+                                style={{ height: `calc(100vh - ${cartPanelHeight}px)` }}
+                            >
+                                {cartData?.data && cartData?.data?.map((cartItem, index) => (
+
+                                    <div key={cartItem.name.split(' ').join('-') + '-' + index} className="flex my-3 border rounded-lg shadow-md shadow-purple-300 px-3 py-3">
+                                        <div className="w-24 flex justify-center items-center mr-2">
+                                            <Image className="ml-auto" src={cartItem.images[0]} height={80} width={80} alt={cartItem.name} />
+                                        </div>
+                                        <div className="flex flex-col justify-between">
+                                            <div className="flex justify-between items-start">
+                                                <h1 className="text-sm text-left line-clamp-2 mr-2">{cartItem.name}</h1>
+                                                <i onClick={() => removeItem(cartItem)} className="bi bi-x-lg cursor-pointer px-1 py-0 hover:bg-purple-700 hover:text-white normal-transition"></i>
+                                            </div>
+                                            <div className="flex justify-between items-center mb-0">
+                                                <div className="flex items-center">
+                                                    <i className="bi bi-dash border hover:border-purple-500 px-1 mr-1 cursor-pointer active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => cartItem.quantity >= 2 && decreaseQuantity(cartItem)}></i>
+                                                    <span className="text-sm mx-2 w-3 text-center text-purple-700">{cartItem.quantity}</span>
+                                                    <i className="bi bi-plus border ml-1 px-1 cursor-pointer hover:border-purple-500 active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => increaseQuantity(cartItem)}></i>
+                                                </div>
+                                                <p className="text-base font-bold text-purple-700 mb-0">
+                                                    BDT {cartItem.price * cartItem.quantity}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div ref={cartFooterHeight} className="absolute bottom-0 left-0 right-0 px-2 py-4 border-t border-purple-500 bg-white">
+                                <div className="flex justify-between items-center">
+                                    <h1 className="text-base font-semibold">Total Quantity</h1>
+                                    <p className="text-base font-bold text-purple-700">
+                                        {cartData?.data.reduce((acc, item) => acc + item.quantity, 0)}
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-between items-center">
+                                    <h1 className="text-base font-semibold">Total Amount</h1>
+                                    <p className="text-base font-bold text-purple-700">
+                                        <span className="mr-2">BDT</span>
+                                        {cartData?.data?.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                                    </p>
+                                </div>
+                                <Link href="/">
+                                    <a className="text-base mt-4 font-semibold text-white bg-purple-700 block text-center py-3 rounded-md hover:bg-purple-500 hover:shadow-md normal-transition">Purchase</a>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

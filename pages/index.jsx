@@ -2,22 +2,23 @@ import { useSession, signOut, signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router';
-import styles from '../styles/Home.module.css'
-import Nav from '../components/Nav'
-import { useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay, EffectFade, Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Autoplay, EffectFade, Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import Link from 'next/link';
-import Layout from './../components/Layout';
-import Products from '../components/Products';
+import Layout from '../components/Layout';
+// import Products from '../components/Products';
+import axios from 'axios';
+import dynamic from 'next/dynamic';
+import Loader from '../components/Loader';
+import useSWR from 'swr';
+const Products = dynamic(() => import('../components/Products'), { loading: () => <Loader /> });
 
-export default function Home() {
+export default function Home({ products }) {
 
   const { data: session } = useSession();
   const router = useRouter()
 
-  // install Swiper modules
-  // SwiperCore.use([Autoplay, EffectFade, Pagination, Navigation]);
+  const { data, error } = useSWR('/products', { fallbackData: products });
 
   return (
     <Layout>
@@ -39,8 +40,8 @@ export default function Home() {
         }}
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
         className="mySwiper"
       >
         <SwiperSlide className="relative">
@@ -79,7 +80,7 @@ export default function Home() {
       </Swiper>
 
       {/* Top reviewed */}
-      <Products heading="Top Reviewed" delay="3400" />
+      <Products className="container mx-auto" heading="Top Reviewed" delay="5000" data={data && data} />
 
 
       <section className='my-16'>
@@ -93,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Hot Sale */}
-      <Products heading="Hot Sale" delay="4500" />
+      <Products className="container mx-auto" heading="Hot Sale" delay="4500" data={data && data} />
 
       {/* banner section */}
       <section className='my-16'>
@@ -119,8 +120,8 @@ export default function Home() {
             }}
             loop={true}
             centeredSlides={true}
-            onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={() => console.log('slide change')}
+            // onSwiper={(swiper) => console.log(swiper)}
             breakpoints={{
               640: {
                 width: 640,
@@ -217,4 +218,11 @@ export default function Home() {
       </section>
     </Layout>
   )
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const { data } = await axios.get('/products')
+  // Pass data to the page via props
+  return { props: { products: data } }
 }
