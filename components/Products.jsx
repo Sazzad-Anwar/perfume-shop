@@ -23,10 +23,8 @@ const Products = ({ heading, delay, data, className }) => {
         console.log(cartProducts)
     }
 
-    className += 'my-16'
-
     return (
-        <section className='my-16'>
+        <section className={className + ' my-16'}>
             <div>
                 <h1 className='text-xl lg:text-3xl font-semibold text-center mb-5 relative after:content[""] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:h-1 after:w-10 after:bg-purple-800'>{heading}</h1>
                 <Swiper

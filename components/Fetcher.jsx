@@ -1,5 +1,5 @@
 import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://all-in-one-db-test.herokuapp.com';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 

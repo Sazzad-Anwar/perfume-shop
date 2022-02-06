@@ -80,7 +80,9 @@ export default function Home({ products }) {
       </Swiper>
 
       {/* Top reviewed */}
-      <Products className="container mx-auto" heading="Top Reviewed" delay="5000" data={data && data} />
+      <div className='container mx-auto'>
+        <Products heading="Top Reviewed" delay="5000" data={data} />
+      </div>
 
 
       <section className='my-16'>
@@ -94,7 +96,9 @@ export default function Home({ products }) {
       </section>
 
       {/* Hot Sale */}
-      <Products className="container mx-auto" heading="Hot Sale" delay="4500" data={data && data} />
+      <div className='container mx-auto'>
+        <Products className="container mx-auto" heading="Hot Sale" delay="4500" data={data} />
+      </div>
 
       {/* banner section */}
       <section className='my-16'>

@@ -5,8 +5,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "start-db": "json-server --watch db.json --port 5000"
+        "lint": "next lint"
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
