@@ -1,26 +1,21 @@
-import { createContext, useEffect, useState } from 'react'
-import useSWR from 'swr';
+import { createContext, useContext, useEffect, useReducer, useState } from 'react'
+import useSWR, { mutate } from 'swr';
 import fetcher from '../components/Fetcher';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import { cartReducer } from './Reducers/CartReducers';
 
 export const GlobalContext = createContext();
 
+export const useGlobalContext = () => useContext(GlobalContext);
+
 const GlobalContextProvider = ({ children }) => {
-    const { data } = useSWR('/cart', fetcher)
-    const [cart, setCart] = useState([]);
-    const [user, setUser] = useState({});
 
-    useEffect(() => {
-        setCart(data?.data)
-    }, [data?.data])
+    let initialState = {
+        cart: []
+    };
 
-    const addToCart = (product) => {
-        setCart([...cart, product]);
-    }
-
-    const removeFromCart = (product) => {
-        setCart(cart.filter((_, index) => cart.indexOf(product) !== index));
-    }
+    const [cart, cartDispatch] = useReducer(cartReducer, initialState.cart);
 
     const login = (email, password) => {
         setUser({
@@ -31,7 +26,7 @@ const GlobalContextProvider = ({ children }) => {
     }
 
     return (
-        <GlobalContext.Provider value={{ cart, addToCart, removeFromCart }}>
+        <GlobalContext.Provider value={{ cart, cartDispatch }}>
             {children}
         </GlobalContext.Provider>
     )

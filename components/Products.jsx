@@ -4,23 +4,21 @@ import { mutate } from 'swr'
 import { useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import Product from './Product';
-import { GlobalContext } from '../Context/GlobalContext';
+import { useGlobalContext } from '../Context/GlobalContext';
+import { ADD_TO_CART } from '../Context/Constants/CartConstants';
+import { v4 as uuidv4 } from 'uuid';
 
 const Products = ({ heading, delay, data, className }) => {
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
-    const { cart, addToCart } = useContext(GlobalContext);
+    const { cartDispatch } = useGlobalContext()
 
     const addToCartHandler = async (product) => {
         product.quantity = 1;
-        addToCart(product)
-        let cartProducts = {
-            "data": [...cart, product]
-        };
-        mutate(`/cart`, cartProducts, false);
-        await axios.post('/cart', cartProducts);
-        mutate('/cart')
-        console.log(cartProducts)
+        product.id = uuidv4();
+        cartDispatch({ type: ADD_TO_CART, payload: product });
+        await axios.post('/carts', product);
+        mutate('/carts')
     }
 
     return (

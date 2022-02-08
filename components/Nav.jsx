@@ -8,11 +8,12 @@ import fetcher from "./Fetcher"
 import useSWR, { useSWRConfig } from 'swr'
 import Category from "./Category"
 import axios from "axios"
-import { GlobalContext } from "../Context/GlobalContext"
+import { GlobalContext, useGlobalContext } from "../Context/GlobalContext"
+import { DECREASE_QUANTITY, GET_PRODUCT_FROM_CART, INCREASE_QUANTITY, REMOVE_FROM_CART } from "../Context/Constants/CartConstants"
 
 const Nav = () => {
     let { mutate } = useSWRConfig()
-    const { cart, removeFromCart } = useContext(GlobalContext)
+    const { cart, cartDispatch } = useGlobalContext()
     const authentication = useSession();
     const router = useRouter();
     const [searchOpen, setSearchOpen] = useState(false);
@@ -27,9 +28,9 @@ const Nav = () => {
     const [stickyNav, setStickyNav] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
 
+    // SWR data fetching
     const { data: categories, error } = useSWR(`/categories`, fetcher);
-
-    const { data: cartData } = useSWR(`/cart`, fetcher);
+    const { data: cartData } = useSWR(`/carts`, fetcher);
 
     useEffect(() => {
         searchOpen && searchRef.current.focus();
@@ -54,7 +55,6 @@ const Nav = () => {
         } else {
             setIsMobileHeight(true);
         }
-
     }, [searchOpen, headerHeight]);
 
     useEffect(() => {
@@ -68,26 +68,40 @@ const Nav = () => {
 
     }, [cartOpen]);
 
+    useEffect(() => {
+        cartDispatch({
+            type: GET_PRODUCT_FROM_CART,
+            payload: cartData
+        })
+    }, [cartDispatch, cartData])
+
     const increaseQuantity = async (item) => {
-        cartData.data[cartData.data.indexOf(item)].quantity++;
-        mutate('/cart', cartData, false);
-        await axios.post('/cart', cartData);
-        mutate('/cart')
+        cartDispatch({
+            type: INCREASE_QUANTITY,
+            payload: item
+        })
+        item.quantity++;
+        await axios.put(`/carts/${item.id}`, item);
+        mutate('/carts')
     }
 
     const decreaseQuantity = async (item) => {
-        cartData.data[cartData.data.indexOf(item)].quantity--;
-        mutate('/cart', cartData, false);
-        await axios.post('/cart', cartData);
-        mutate('/cart')
+        cartDispatch({
+            type: DECREASE_QUANTITY,
+            payload: item
+        })
+        item.quantity--;
+        await axios.put(`/carts/${item.id}`, item);
+        mutate('/carts')
     }
 
     const removeItem = async (item) => {
-        removeFromCart(item);
-        cartData.data = cart.filter((_, index) => cart.indexOf(item) !== index);
-        mutate('/cart', cartData, false);
-        await axios.post(`/cart/`, cartData);
-        mutate('/cart')
+        cartDispatch({
+            type: REMOVE_FROM_CART,
+            payload: item
+        });
+        await axios.delete(`/carts/${item.id}`, item);
+        mutate('/carts')
     }
 
     return (
@@ -131,7 +145,7 @@ const Nav = () => {
                         </div>
                         <div className="relative cursor-pointer w-7" onClick={() => setCartOpen(true)}>
                             <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-2 flex justify-center items-center text-white">
-                                {cartData?.data?.length}
+                                {cart?.length}
                             </span>
                             <i className="bi bi-bag text-3xl"></i>
                         </div>
@@ -172,7 +186,7 @@ const Nav = () => {
 
                         {stickyNav && <div className="relative cursor-pointer w-7" onClick={() => setCartOpen(true)}>
                             <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-2 flex justify-center items-center text-white">
-                                {cartData?.data.length}
+                                {cart?.length}
                             </span>
                             <i className="bi bi-bag text-2xl"></i>
                         </div>}
@@ -196,7 +210,7 @@ const Nav = () => {
                                 className="overflow-auto fixed pb-5 cartPanel"
                                 style={{ height: `calc(100vh - ${cartPanelHeight}px)` }}
                             >
-                                {cartData?.data && cartData?.data?.map((cartItem, index) => (
+                                {cart && cart.map((cartItem, index) => (
 
                                     <div key={cartItem.name.split(' ').join('-') + '-' + index} className="flex my-3 border rounded-lg shadow-md shadow-purple-300 px-3 py-3">
                                         <div className="w-24 flex justify-center items-center mr-2">
@@ -226,7 +240,7 @@ const Nav = () => {
                                 <div className="flex justify-between items-center">
                                     <h1 className="text-base font-semibold">Total Quantity</h1>
                                     <p className="text-base font-bold text-purple-700">
-                                        {cartData?.data.reduce((acc, item) => acc + item.quantity, 0)}
+                                        {cart && cart.reduce((acc, item) => acc + item.quantity, 0)}
                                     </p>
                                 </div>
 
@@ -234,7 +248,7 @@ const Nav = () => {
                                     <h1 className="text-base font-semibold">Total Amount</h1>
                                     <p className="text-base font-bold text-purple-700">
                                         <span className="mr-2">BDT</span>
-                                        {cartData?.data?.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                                        {cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
                                     </p>
                                 </div>
                                 <Link href="/">

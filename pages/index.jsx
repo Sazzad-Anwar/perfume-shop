@@ -11,6 +11,8 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Loader from '../components/Loader';
 import useSWR from 'swr';
+import { useEffect } from 'react';
+import { useGlobalContext } from '../Context/GlobalContext';
 const Products = dynamic(() => import('../components/Products'), { loading: () => <Loader /> });
 
 export default function Home({ products }) {

@@ -54,15 +54,11 @@ const Index = ({ product, images, relatedProduct }) => {
     let avgRating = parseFloat((product.reviews.reduce((acc, item) => acc + item.rating, 0) / product.reviews.length));
 
     const addToCartHandler = async (product) => {
-        product.quantity = quantity;
+        product.quantity = 1;
         addToCart(product)
-        let cartProducts = {
-            "data": [...cart, product]
-        };
-        mutate(`/cart`, cartProducts, false);
-        await axios.post('/cart', cartProducts);
-        mutate('/cart')
-        console.log(cartProducts)
+        mutate(`/carts`, cart, false);
+        // await axios.post('/carts', product);
+        mutate('/carts')
     }
 
     return (
@@ -118,9 +114,12 @@ const Index = ({ product, images, relatedProduct }) => {
                         </Swiper>
                     </div>
                     <div className="lg:col-span-2">
-                        <div className="flex items-center">
-                            <Rating rating={avgRating} size="text-base" />
-                            <span className="text-sm text-purple-700">({product.reviews.length})</span>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <Rating rating={avgRating} size="text-base" />
+                                <span className="text-sm text-purple-700">({product.reviews.length})</span>
+                            </div>
+                            <h2 className="text-sm"><i className={`bi mr-2 ${!productStock ? 'bi-x-circle-fill text-red-500' : 'bi-check-circle-fill text-green-500'}`}></i>{!productStock ? 'Out of Stock' : 'In Stock'}</h2>
                         </div>
                         <h1 className="text-xl md:text-2xl mb-5 lg:text-3xl text-purple-700 line-clamp-2">{product.name}</h1>
                         <p className="text-base md:text-sm lg:text-base lg:mr-20 xl:mr-40">{product.details}</p>
@@ -152,23 +151,27 @@ const Index = ({ product, images, relatedProduct }) => {
                         </div>
 
                         <div className="mt-5">
-                            <h2 className="text-sm mb-2"><i className={`bi mr-2 ${!productStock ? 'bi-x-circle-fill text-red-500' : 'bi-check-circle-fill text-green-500'}`}></i>{!productStock ? 'Out of Stock' : 'In Stock'}</h2>
                             <div className="flex items-center">
-                                <i className="bi bi-dash border hover:border-purple-500 px-1 mr-1 cursor-pointer active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => quantity >= 2 && setQuantity(quantity - 1)}></i>
-                                <span className="text-sm mx-2 w-3 text-center text-purple-700">{quantity}</span>
-                                <i className="bi bi-plus border ml-1 px-1 cursor-pointer hover:border-purple-500 active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => productStock && setQuantity(quantity + 1)}></i>
-                                <button
-                                    onClick={() => addToCartHandler(product)}
-                                    className="border py-1 px-3 text-sm ml-3 border-purple-300 hover:border-purple-700 hover:shadow-md active:bg-purple-700 active:text-white normal-transition text-purple-700">Add To Cart</button>
+                                <p className="text-lg font-semibold mb-0 mr-2">Quantity</p>
+                                <i className="bi bi-dash border hover:border-purple-500 px-2 text-xl py-1 rounded-md mr-1 cursor-pointer active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => quantity >= 2 && setQuantity(quantity - 1)}></i>
+                                <span className="text-xl mx-2 w-3 text-center text-purple-700">{quantity}</span>
+                                <i className="bi bi-plus border ml-1 px-2 text-xl py-1 rounded-md cursor-pointer hover:border-purple-500 active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => productStock && setQuantity(quantity + 1)}></i>
+
                             </div>
+                            <button
+                                onClick={() => addToCartHandler(product)}
+                                className="border text-xl py-2 px-11 mt-4 rounded-md bg-purple-700 border-purple-300 hover:bg-white hover:shadow-md active:bg-purple-700 hover:text-purple-700 active:text-white normal-transition text-white"
+                            >
+                                Add To Cart
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-20">
                     <div className="flex items-center">
-                        <h1 onClick={() => setShowProductDetails(true)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Details</h1>
-                        <h1 onClick={() => setShowProductDetails(false)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${!showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Specifications</h1>
+                        <h1 onClick={() => setShowProductDetails(true)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Specification</h1>
+                        <h1 onClick={() => setShowProductDetails(false)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${!showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Reviews</h1>
                     </div>
                     {
                         showProductDetails &&
@@ -182,40 +185,38 @@ const Index = ({ product, images, relatedProduct }) => {
                     {
                         !showProductDetails &&
                         <div className="w-full animate__animated animate__fadeInUp mt-5">
-                            <p className="text-base">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae fugiat itaque nostrum, minima recusandae delectus inventore sed quod pariatur ipsa accusantium harum at omnis a. Maiores nesciunt iusto repellat expedita sapiente blanditiis, optio officia numquam doloremque esse modi inventore consequatur illum maxime soluta incidunt exercitationem eos facere est tempore nihil! Saepe animi commodi quo earum corrupti a ullam recusandae tempora atque quos dolores eveniet inventore, autem, qui obcaecati minima itaque minus provident culpa sunt officia velit alias. Fugit, repudiandae! Modi ullam iusto corporis non facere neque aperiam voluptatibus ut, hic tempora perferendis autem reprehenderit repellat, dicta necessitatibus voluptatum nam ratione.
-                            </p>
+                            <div className="mt-4 sticky top-0 bg-white">
+                                <h1 className="text-3xl font-semibold">Customer Reviews</h1>
+                                <div className="flex items-center">
+                                    <h3 className="text-3xl font-bold mb-0 mr-2">{avgRating}</h3>
+                                    <Rating rating={avgRating} size="text-xl" />
+                                </div>
+                                <p className="text-base">Based on {product.reviews.length} reviews</p>
+                            </div>
+
+                            <div className="mt-5 overflow-auto" style={{ height: windowHeight / 2 }}>
+                                {product.reviews.map((review, index) => (
+                                    <div key={review.name + '-' + review.id + '-' + index} className="border-l-4 shadow-md border-purple-400 p-4 mb-10">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center">
+                                                <div className="h-14 w-14 flex justify-center text-2xl items-center rounded-full bg-purple-400 text-white font-semibold">{review.name.split('')[0]}</div>
+                                                <div className="flex flex-col justify-start ml-3">
+                                                    <h1 className="text-2xl font-semibold text-purple-600 mb-0">{review.name}</h1>
+                                                    <Rating rating={avgRating} size="text-sm" />
+                                                </div>
+                                            </div>
+                                            <h4 className="text-base mb-0 font-semibold text-purple-600">{(new Date()).toLocaleDateString()}</h4>
+                                        </div>
+
+                                        <p className="mt-3 text-lg">{review.review}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     }
                 </div>
 
-                <div className="mt-10 sticky top-0 bg-white">
-                    <h1 className="text-3xl font-semibold">Customer Reviews</h1>
-                    <div className="flex items-center">
-                        <h3 className="text-3xl font-bold mb-0 mr-2">{avgRating}</h3>
-                        <Rating rating={avgRating} size="text-xl" />
-                    </div>
-                    <p className="text-base">Based on {product.reviews.length} reviews</p>
-                </div>
 
-                <div className="mt-5 overflow-auto" style={{ height: windowHeight / 2 }}>
-                    {product.reviews.map((review, index) => (
-                        <div key={review.name + '-' + review.id + '-' + index} className="border-l-4 shadow-md border-purple-400 p-4 mb-10">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <div className="h-14 w-14 flex justify-center text-2xl items-center rounded-full bg-purple-400 text-white font-semibold">{review.name.split('')[0]}</div>
-                                    <div className="flex flex-col justify-start ml-3">
-                                        <h1 className="text-2xl font-semibold text-purple-600 mb-0">{review.name}</h1>
-                                        <Rating rating={avgRating} size="text-sm" />
-                                    </div>
-                                </div>
-                                <h4 className="text-base mb-0 font-semibold text-purple-600">{(new Date()).toLocaleDateString()}</h4>
-                            </div>
-
-                            <p className="mt-3 text-lg">{review.review}</p>
-                        </div>
-                    ))}
-                </div>
 
                 {/* related product */}
                 <Products heading="Related Products" delay="4500" data={relatedProduct} />
