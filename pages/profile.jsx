@@ -14,7 +14,7 @@ const Profile = () => {
                 <div className="w-96 p-5 border rounded-xl shadow-lg text-center bg-white">
                     <h1 className="text-2xl py-5 font-semibold">{authentication?.data?.user?.name} Welcome to dashboard</h1>
                     <button onClick={() => {
-                        signOut();
+                        signOut({ redirect: false });
                         router.push('/login');
                     }} className="w-80 border rounded-lg bg-gray-700 hover:bg-gray-900 text-white py-3 my-1 normal-transition">Sign Out</button>
                 </div>

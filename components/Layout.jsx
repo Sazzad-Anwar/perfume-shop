@@ -1,5 +1,4 @@
 import Link from "next/link"
-import GlobalContextProvider from "../Context/GlobalContext"
 import Nav from "./Nav"
 
 const Layout = ({ children }) => {

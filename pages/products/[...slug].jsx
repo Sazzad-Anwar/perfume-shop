@@ -12,6 +12,8 @@ import { GlobalContext } from "../../Context/GlobalContext";
 import Rating from "../../components/Rating";
 import Products from "../../components/Products";
 import { useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { ADD_TO_CART } from "../../Context/Constants/CartConstants";
 
 export const getServerSideProps = async ({ query }) => {
 
@@ -31,7 +33,7 @@ export const getServerSideProps = async ({ query }) => {
 
 const Index = ({ product, images, relatedProduct }) => {
 
-    const { cart, addToCart } = useContext(GlobalContext)
+    const { cart, cartDispatch } = useContext(GlobalContext)
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
     const router = useRouter();
@@ -54,11 +56,10 @@ const Index = ({ product, images, relatedProduct }) => {
     let avgRating = parseFloat((product.reviews.reduce((acc, item) => acc + item.rating, 0) / product.reviews.length));
 
     const addToCartHandler = async (product) => {
-        product.quantity = 1;
-        addToCart(product)
-        mutate(`/carts`, cart, false);
-        // await axios.post('/carts', product);
-        mutate('/carts')
+        product.quantity = quantity;
+        product.id = uuidv4();
+        cartDispatch({ type: ADD_TO_CART, payload: product });
+        await axios.post('/carts', product);
     }
 
     return (
@@ -67,14 +68,14 @@ const Index = ({ product, images, relatedProduct }) => {
                 <title>{productDetails.name}</title>
             </Head>
             <div className="container mx-auto py-5 xl:py-10">
-                <div className="flex items-center text-sm">
+                <div className="flex items-center text-base font-semibold">
                     <Link href="/">
                         <a className=" text-gray-500 hover:text-black normal-transition">
                             Home
                         </a>
                     </Link>
                     <i className="bi bi-chevron-compact-right mx-3 text-gray-500"></i>
-                    <p className=" text-gray-500 truncate mb-0">{productDetails.name}</p>
+                    <p className=" text-purple-800 truncate mb-0">{productDetails.name}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
@@ -170,8 +171,8 @@ const Index = ({ product, images, relatedProduct }) => {
 
                 <div className="mt-20">
                     <div className="flex items-center">
-                        <h1 onClick={() => setShowProductDetails(true)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Specification</h1>
-                        <h1 onClick={() => setShowProductDetails(false)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-sm font-semibold mr-10 border-b-4 pb-3 ${!showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Product Reviews</h1>
+                        <h1 onClick={() => setShowProductDetails(true)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-base font-semibold mr-10 border-b-4 pb-3 ${showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Specification</h1>
+                        <h1 onClick={() => setShowProductDetails(false)} className={`lg:text-xl cursor-pointer hover:text-purple-600 text-base font-semibold mr-10 border-b-4 pb-3 ${!showProductDetails ? 'border-purple-600 text-purple-600 normal-transition' : 'border-transparent'} `}>Reviews</h1>
                     </div>
                     {
                         showProductDetails &&
@@ -198,17 +199,18 @@ const Index = ({ product, images, relatedProduct }) => {
                                 {product.reviews.map((review, index) => (
                                     <div key={review.name + '-' + review.id + '-' + index} className="border-l-4 shadow-md border-purple-400 p-4 mb-10">
                                         <div className="flex items-center justify-between">
-                                            <div className="flex items-center">
-                                                <div className="h-14 w-14 flex justify-center text-2xl items-center rounded-full bg-purple-400 text-white font-semibold">{review.name.split('')[0]}</div>
+                                            <div className="flex">
+                                                <div className="h-10 w-10 flex justify-center text-2xl items-center rounded-full bg-purple-400 text-white font-semibold">{review.name.split('')[0]}</div>
                                                 <div className="flex flex-col justify-start ml-3">
-                                                    <h1 className="text-2xl font-semibold text-purple-600 mb-0">{review.name}</h1>
+                                                    <h1 className="text-xl font-semibold text-purple-600 mb-0">{review.name}</h1>
                                                     <Rating rating={avgRating} size="text-sm" />
+                                                    <p className="mt-3  text-lg">{review.review}</p>
                                                 </div>
                                             </div>
-                                            <h4 className="text-base mb-0 font-semibold text-purple-600">{(new Date()).toLocaleDateString()}</h4>
+                                            <h4 className="text-sm mb-0 font-semibold text-purple-600">{(new Date()).toLocaleDateString()}</h4>
                                         </div>
 
-                                        <p className="mt-3 text-lg">{review.review}</p>
+
                                     </div>
                                 ))}
                             </div>

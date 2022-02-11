@@ -18,7 +18,6 @@ const Products = ({ heading, delay, data, className }) => {
         product.id = uuidv4();
         cartDispatch({ type: ADD_TO_CART, payload: product });
         await axios.post('/carts', product);
-        mutate('/carts')
     }
 
     return (

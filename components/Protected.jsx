@@ -10,18 +10,17 @@ const Protected = ({ children, className }) => {
 
     useEffect(() => {
         if (authentication && authentication.status === 'unauthenticated') {
-            router.push('/login')
+            router.push(`/login?to=${router.pathname}`)
         }
     }, [router, authentication])
 
     return (
         <div>
-            {authentication && (authentication.status ==='loading' || !authentication.data) ? <Loader /> :
+            {authentication &&
                 <div className={className}>
                     {children}
                 </div>
             }
-
         </div>
     )
 }

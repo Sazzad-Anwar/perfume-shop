@@ -8,8 +8,9 @@ import fetcher from "./Fetcher"
 import useSWR, { useSWRConfig } from 'swr'
 import Category from "./Category"
 import axios from "axios"
-import { GlobalContext, useGlobalContext } from "../Context/GlobalContext"
+import { useGlobalContext } from "../Context/GlobalContext"
 import { DECREASE_QUANTITY, GET_PRODUCT_FROM_CART, INCREASE_QUANTITY, REMOVE_FROM_CART } from "../Context/Constants/CartConstants"
+import { Button } from "antd"
 
 const Nav = () => {
     let { mutate } = useSWRConfig()
@@ -76,32 +77,33 @@ const Nav = () => {
     }, [cartDispatch, cartData])
 
     const increaseQuantity = async (item) => {
+
         cartDispatch({
             type: INCREASE_QUANTITY,
             payload: item
         })
-        item.quantity++;
-        await axios.put(`/carts/${item.id}`, item);
-        mutate('/carts')
+
+        await axios.put(`/carts/${item.id}`, { ...item, quantity: item.quantity + 1 });
     }
 
     const decreaseQuantity = async (item) => {
+
         cartDispatch({
             type: DECREASE_QUANTITY,
             payload: item
         })
-        item.quantity--;
-        await axios.put(`/carts/${item.id}`, item);
-        mutate('/carts')
+
+        await axios.put(`/carts/${item.id}`, { ...item, quantity: item.quantity - 1 });
     }
 
     const removeItem = async (item) => {
+
+        await axios.delete(`/carts/${item.id}`, item);
+
         cartDispatch({
             type: REMOVE_FROM_CART,
             payload: item
         });
-        await axios.delete(`/carts/${item.id}`, item);
-        mutate('/carts')
     }
 
     return (
@@ -132,16 +134,36 @@ const Nav = () => {
                     </div>
                     <div className="justify-self-end flex items-center text-white">
                         <div className="mr-10 hidden lg:block">
-                            <h1 className="text-base font-semibold text-white mb-0">Hello, Enthusiast</h1>
-                            <div className="flex items-center">
-                                <Link href="/login">
-                                    <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Log In</a>
-                                </Link>
-                                <span className='text-xs uppercase mx-1'>OR</span>
-                                <Link href="/register">
-                                    <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Register</a>
-                                </Link>
-                            </div>
+                            <h1 className="text-base font-semibold text-white mb-0">
+                                Hello! <span className="pl-1">
+                                    {authentication && authentication.data ? authentication.data.user.name : "Enthusiast"}
+                                </span>
+                            </h1>
+                            {authentication && authentication.data ?
+                                <div className="flex items-center">
+                                    <Link href="/profile">
+                                        <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Profile</a>
+                                    </Link>
+                                    <span className='text-xs uppercase mx-1'>OR</span>
+                                    <div onClick={() => {
+                                        signOut({ redirect: false });
+                                        router.replace('/login');
+                                    }} className="text-xs cursor-pointer text-white hover:text-purple-800 uppercase normal-transition font-medium">
+                                        Logout
+                                    </div>
+                                </div>
+                                :
+                                <div className="flex items-center">
+                                    <Link href="/login">
+                                        <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Log In</a>
+                                    </Link>
+                                    <span className='text-xs uppercase mx-1'>OR</span>
+                                    <Link href="/registration">
+                                        <a className="text-xs text-white hover:text-purple-800 uppercase normal-transition font-medium">Register</a>
+                                    </Link>
+                                </div>
+                            }
+
                         </div>
                         <div className="relative cursor-pointer w-7" onClick={() => setCartOpen(true)}>
                             <span className="h-5 w-5 text-xs rounded-full bg-purple-800 font-semibold absolute -top-1 -right-2 flex justify-center items-center text-white">
@@ -162,7 +184,7 @@ const Nav = () => {
                         'list-none flex lg:flex-row lg:items-center mb-0'}>
                         {categories && categories.map(category => (
                             <li key={category.id} className="py-2 lg:py-0 px-2 group">
-                                <NavLink className="py-2 text-white font-medium uppercase border-b border-transparent hover:text-purple-500 lg:hover:text-gray-300 hover:border-white normal-transition" href={`/categories/${category.name.toLowerCase()}`}>
+                                <NavLink className="py-2 text-purple-800 lg:text-white font-medium uppercase border-b border-transparent hover:text-purple-500 lg:hover:text-gray-300 hover:border-white normal-transition" href={`/categories/${category.name.toLowerCase()}`}>
                                     <p className="mb-0">{category.name}</p>
                                 </NavLink>
                                 {category.subCategories.length ?
@@ -237,23 +259,34 @@ const Nav = () => {
                             </div>
 
                             <div ref={cartFooterHeight} className="absolute bottom-0 left-0 right-0 px-2 py-4 border-t border-purple-500 bg-white">
-                                <div className="flex justify-between items-center">
-                                    <h1 className="text-base font-semibold">Total Quantity</h1>
-                                    <p className="text-base font-bold text-purple-700">
-                                        {cart && cart.reduce((acc, item) => acc + item.quantity, 0)}
-                                    </p>
-                                </div>
+                                {cart && cart.length ?
+                                    <div>
+                                        <div className="flex justify-between items-center">
+                                            <h1 className="text-base font-semibold">Total Quantity</h1>
+                                            <p className="text-base font-bold text-purple-700">
+                                                {cart && cart.reduce((acc, item) => acc + item.quantity, 0)}
+                                            </p>
+                                        </div>
 
-                                <div className="flex justify-between items-center">
-                                    <h1 className="text-base font-semibold">Total Amount</h1>
-                                    <p className="text-base font-bold text-purple-700">
-                                        <span className="mr-2">BDT</span>
-                                        {cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
-                                    </p>
-                                </div>
-                                <Link href="/">
-                                    <a className="text-base mt-4 font-semibold text-white bg-purple-700 block text-center py-3 rounded-md hover:bg-purple-500 hover:shadow-md normal-transition">Purchase</a>
-                                </Link>
+                                        <div className="flex justify-between items-center">
+                                            <h1 className="text-base font-semibold">Total Amount</h1>
+                                            <p className="text-base font-bold text-purple-700">
+                                                <span className="mr-2">BDT</span>
+                                                {cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                                            </p>
+                                        </div>
+                                        <Link href="/checkout">
+                                            <a className="">
+                                                <Button type="primary" className="w-full" size="large">
+                                                    Checkout
+                                                </Button>
+                                            </a>
+                                        </Link>
+                                    </div> :
+                                    <Button type="primary" disabled className="w-full text-white" size="large">
+                                        Your cart is empty
+                                    </Button>
+                                }
                             </div>
                         </div>
                     </div>

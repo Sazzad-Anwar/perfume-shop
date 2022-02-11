@@ -12,5 +12,5 @@ services:
             - 3000:3000
         environment:
             - NEXTAUTH_URL=http://localhost:3000/api/auth
-            - NODE_ENV=development
+            - NEXT_PUBLIC_API_URL=https://all-in-one-db-test.herokuapp.com
         command: yarn dev

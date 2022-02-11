@@ -90,3 +90,92 @@ object {
 .site-layout .site-layout-background {
     background: #fff;
 }
+
+.ant-input:hover {
+    border-color: #742daf !important;
+}
+
+.ant-input:not(:hover) {
+    border-color: #d9d9d9 !important;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+    box-shadow: 0 0 0 2px rgb(212 174 251) !important;
+}
+
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: #742daf !important;
+}
+.ant-checkbox-checked::after {
+    border: 1px solid #742daf !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #742daf !important;
+    border-color: #742daf !important;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: #742daf !important;
+}
+
+.ant-message {
+    backdrop-filter: blur(5px) !important;
+}
+
+.ant-message-notice .ant-message-notice-content {
+    border-radius: 5px !important;
+    border: 1px solid #742daf !important;
+}
+
+.ant-btn-primary {
+    border-color: #742daf !important;
+    background: #742daf !important;
+}
+
+.ant-btn:hover,
+.ant-btn:focus {
+    color: #742daf !important;
+    border-color: #742daf !important;
+    background: #fff !important;
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: #742daf !important;
+    box-shadow: 0 0 0 2px rgb(212 174 251) !important;
+}
+
+.ant-radio-checked::after {
+    border: 1px solid #742daf !important;
+}
+
+.ant-radio-inner::after {
+    background-color: #742daf !important;
+}
+
+.ant-radio-checked .ant-radio-inner {
+    border-color: #742daf !important;
+}
+
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio:hover .ant-radio-inner,
+.ant-radio-input:focus + .ant-radio-inner {
+    border-color: #742daf !important;
+}
+
+.ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
+    border-color: #ff4d4f !important;
+}
+.ant-input-number:focus,
+.ant-input-number-focused {
+    border-color: #742daf !important;
+    box-shadow: 0 0 0 2px rgb(212 174 251) !important;
+}
+
+.ant-input-number:hover {
+    border-color: #742daf !important;
+}
