@@ -155,7 +155,7 @@ const Index = ({ product, images, relatedProduct }) => {
                             <div className="flex items-center">
                                 <p className="text-lg font-semibold mb-0 mr-2">Quantity</p>
                                 <i className="bi bi-dash border hover:border-purple-500 px-2 text-xl py-1 rounded-md mr-1 cursor-pointer active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => quantity >= 2 && setQuantity(quantity - 1)}></i>
-                                <span className="text-xl mx-2 w-3 text-center text-purple-700">{quantity}</span>
+                                <span className="text-xl mx-2 w-5 text-center text-purple-700">{quantity}</span>
                                 <i className="bi bi-plus border ml-1 px-2 text-xl py-1 rounded-md cursor-pointer hover:border-purple-500 active:bg-purple-500 active:text-white normal-transition border-purple-300" onClick={() => productStock && setQuantity(quantity + 1)}></i>
 
                             </div>
