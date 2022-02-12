@@ -4,16 +4,17 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, } from 'swiper';
-import { GlobalContext } from "../../Context/GlobalContext";
+import { useGlobalContext } from "../../Context/GlobalContext";
 import Rating from "../../components/Rating";
 import Products from "../../components/Products";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { ADD_TO_CART } from "../../Context/Constants/CartConstants";
+import BreadCrumb from "../../components/BreadCrumb";
 
 export const getServerSideProps = async ({ query }) => {
 
@@ -33,7 +34,7 @@ export const getServerSideProps = async ({ query }) => {
 
 const Index = ({ product, images, relatedProduct }) => {
 
-    const { cart, cartDispatch } = useContext(GlobalContext)
+    const { cart, cartDispatch } = useGlobalContext();
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
     const router = useRouter();
@@ -68,15 +69,21 @@ const Index = ({ product, images, relatedProduct }) => {
                 <title>{productDetails.name}</title>
             </Head>
             <div className="container mx-auto py-5 xl:py-10">
-                <div className="flex items-center text-base font-semibold">
-                    <Link href="/">
-                        <a className=" text-gray-500 hover:text-black normal-transition">
-                            Home
-                        </a>
-                    </Link>
-                    <i className="bi bi-chevron-compact-right mx-3 text-gray-500"></i>
-                    <p className=" text-purple-800 truncate mb-0">{productDetails.name}</p>
-                </div>
+                <BreadCrumb
+                    breadCrumbs={[
+                        {
+                            name: 'Home',
+                            isLink: true,
+                            link: '/'
+                        },
+                        {
+                            name: productDetails.name,
+                            isLink: false,
+                            link: ''
+                        },
+
+                    ]}
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
                     <div>

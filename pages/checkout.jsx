@@ -12,8 +12,9 @@ import { useGlobalContext } from "../Context/GlobalContext";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader";
 import axios from "axios";
+import { CLEAR_CART } from "../Context/Constants/CartConstants";
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
     const { data } = await axios.get('/carts');
 
     if (!data.length) {
@@ -27,16 +28,16 @@ export const getServerSideProps = async (ctx) => {
 
     return {
         props: {
-            cart: data
+            // cart: data
         },
 
     }
 }
 
-const Index = ({ cart }) => {
+const Index = ({ }) => {
 
     const router = useRouter();
-    // const { cart } = useGlobalContext();
+    const { cart, cartDispatch } = useGlobalContext();
     const [selectedAddress, setSelectedAddress] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [discountAmount, setDiscountAmount] = useState(0);
@@ -108,6 +109,9 @@ const Index = ({ cart }) => {
 
     let payNowHandler = () => {
         setIsLoading(true);
+        cartDispatch({
+            type: CLEAR_CART
+        })
         setTimeout(() => {
             setIsLoading(false);
             setIsPaymentModalOpen(true);
@@ -296,10 +300,20 @@ const Index = ({ cart }) => {
                             </div>
                         }
                         extra={[
-                            <Button type="primary" key="console">
-                                Back to homepage
-                            </Button>,
-                            <Button key="buy">Track your order</Button>,
+                            <Link key="backToHome" href="/">
+                                <a>
+                                    <Button type="primary">
+                                        Back to homepage
+                                    </Button>
+                                </a>
+                            </Link>,
+                            <Link key="trackOrder" href="/track-order">
+                                <a>
+                                    <Button type="default">
+                                        Track your order
+                                    </Button>
+                                </a>
+                            </Link>,
                         ]}
                     />
                 </Modal>
@@ -446,7 +460,7 @@ const Index = ({ cart }) => {
                     </div>
                 </div>
             </Layout>
-        </Protected>
+        </Protected >
     )
 
 }

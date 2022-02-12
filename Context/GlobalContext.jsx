@@ -1,8 +1,5 @@
-import { createContext, useContext, useEffect, useReducer, useState } from 'react'
-import useSWR, { mutate } from 'swr';
-import fetcher from '../components/Fetcher';
+import { createContext, useContext, useReducer } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import { cartReducer } from './Reducers/CartReducers';
 
 export const GlobalContext = createContext();

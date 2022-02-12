@@ -179,3 +179,7 @@ object {
 .ant-input-number:hover {
     border-color: #742daf !important;
 }
+
+.customUpload .ant-upload-list-item {
+    margin-top: 0px !important;
+}

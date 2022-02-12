@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_TO_CART, DECREASE_QUANTITY, ERROR_WHILE_CART_ACTION, GET_PRODUCT_FROM_CART, INCREASE_QUANTITY, REMOVE_FROM_CART } from "../Constants/CartConstants";
+import { ADD_TO_CART, CLEAR_CART, DECREASE_QUANTITY, ERROR_WHILE_CART_ACTION, GET_PRODUCT_FROM_CART, INCREASE_QUANTITY, REMOVE_FROM_CART } from "../Constants/CartConstants";
 
 export const cartReducer = (state, action) => {
     switch (action.type) {
@@ -29,6 +29,8 @@ export const cartReducer = (state, action) => {
                 }
                 return item;
             })
+        case CLEAR_CART:
+            return [];
         case ERROR_WHILE_CART_ACTION:
             return { error: action.payload };
         default:
