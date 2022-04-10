@@ -4,12 +4,12 @@ This is a pwa ready Next.js project template. Just download it and start coding!
 
 ## Project Details
 
--   Ant Design
--   Next Auth (authentication)
--   React Hook Form
--   Rect Redux
--   Redux Thunk
--   TailwindCss
+- Ant Design
+- Next Auth (authentication)
+- React Hook Form
+- Rect Redux
+- Redux Thunk
+- TailwindCss
 
 <div style="display:flex;justify-content:center;align-items:center;margin-top:4rem">
 <img src="./public/vercel.svg" style="width:auto; height:100px;margin-right:2rem" />

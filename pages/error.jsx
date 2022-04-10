@@ -4,16 +4,13 @@ import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 
 export default function Error() {
+  const router = useRouter();
 
-    const router = useRouter()
+  console.log(router);
 
-    console.log(router)
-
-    return (
-        <div>
-            <h1>Error</h1>
-        </div>
-
-    )
-
+  return (
+    <div>
+      <h1>Error</h1>
+    </div>
+  );
 }

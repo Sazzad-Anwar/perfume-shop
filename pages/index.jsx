@@ -1,26 +1,34 @@
-import { useSession, signOut, signIn } from 'next-auth/react'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useRouter } from 'next/router';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectFade, Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import Link from 'next/link';
-import Layout from '../components/Layout';
+import { useSession, signOut, signIn } from "next-auth/react";
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {
+  Autoplay,
+  EffectFade,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+} from "swiper";
+import Link from "next/link";
+import Layout from "../components/Layout";
 // import Products from '../components/Products';
-import axios from 'axios';
-import dynamic from 'next/dynamic';
-import Loader from '../components/Loader';
-import useSWR from 'swr';
-import { useEffect } from 'react';
-import { useGlobalContext } from '../Context/GlobalContext';
-const Products = dynamic(() => import('../components/Products'), { loading: () => <Loader /> });
+import axios from "axios";
+import dynamic from "next/dynamic";
+import Loader from "../components/Loader";
+import useSWR from "swr";
+import { useEffect } from "react";
+import { useGlobalContext } from "../Context/GlobalContext";
+const Products = dynamic(() => import("../components/Products"), {
+  loading: () => <Loader />,
+});
 
 export default function Home({ products }) {
-
   const { data: session } = useSession();
-  const router = useRouter()
+  const router = useRouter();
 
-  const { data, error } = useSWR('/products', { fallbackData: products });
+  const { data, error } = useSWR("/products", { fallbackData: products });
 
   return (
     <Layout>
@@ -35,10 +43,10 @@ export default function Home({ products }) {
         slidesPerView={1}
         centeredSlides={true}
         navigation={false}
-        effect={'fade'}
+        effect={"fade"}
         autoplay={{
-          "delay": 3400,
-          "disableOnInteraction": false
+          delay: 3400,
+          disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
@@ -47,82 +55,139 @@ export default function Home({ products }) {
         className="mySwiper"
       >
         <SwiperSlide className="relative">
-          <div className='absolute inset-0 flex z-20 justify-center items-center'>
-            <div className='text-center'>
-              <h3 className='text-base lg:text-3xl font-semibold text-white'>UP TO 70% OFF</h3>
-              <h1 className='text-2xl lg:text-5xl text-white font-semibold'>Winter Restock Sale</h1>
-              <h3 className='text-base lg:text-3xl text-white'>Replenish your supply on makeup, hair care and more.</h3>
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <div className="text-center">
+              <h3 className="text-base font-semibold text-white lg:text-3xl">
+                UP TO 70% OFF
+              </h3>
+              <h1 className="text-2xl font-semibold text-white lg:text-5xl">
+                Winter Restock Sale
+              </h1>
+              <h3 className="text-base text-white lg:text-3xl">
+                Replenish your supply on makeup, hair care and more.
+              </h3>
             </div>
           </div>
-          <div className='absolute inset-0 bg-black opacity-75 z-10' />
-          <Image layout="intrinsic" className='absolute inset-0' height={820} width={1920} src="/perfume-1.jpg" alt="hero" />
+          <div className="absolute inset-0 z-10 bg-black opacity-75" />
+          <Image
+            layout="intrinsic"
+            className="absolute inset-0"
+            height={820}
+            width={1920}
+            src="/perfume-1.jpg"
+            alt="hero"
+          />
         </SwiperSlide>
         <SwiperSlide className="relative">
-          <div className='absolute inset-0 flex z-20 justify-center items-center'>
-            <div className='text-center'>
-              <h3 className='text-base lg:text-3xl font-semibold text-white'>UP TO 70% OFF</h3>
-              <h1 className='text-2xl lg:text-5xl text-white font-semibold'>Winter Restock Sale</h1>
-              <h3 className='text-base lg:text-3xl text-white'>Replenish your supply on makeup, hair care and more.</h3>
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <div className="text-center">
+              <h3 className="text-base font-semibold text-white lg:text-3xl">
+                UP TO 70% OFF
+              </h3>
+              <h1 className="text-2xl font-semibold text-white lg:text-5xl">
+                Winter Restock Sale
+              </h1>
+              <h3 className="text-base text-white lg:text-3xl">
+                Replenish your supply on makeup, hair care and more.
+              </h3>
             </div>
           </div>
-          <div className='absolute inset-0 bg-black opacity-75 z-10' />
-          <Image layout="intrinsic" className='absolute inset-0' height={820} width={1920} src="/perfume-2.jpg" alt="hero" />
+          <div className="absolute inset-0 z-10 bg-black opacity-75" />
+          <Image
+            layout="intrinsic"
+            className="absolute inset-0"
+            height={820}
+            width={1920}
+            src="/perfume-2.jpg"
+            alt="hero"
+          />
         </SwiperSlide>
         <SwiperSlide className="relative">
-          <div className='absolute inset-0 flex z-20 justify-center items-center'>
-            <div className='text-center'>
-              <h3 className='text-base lg:text-3xl font-semibold text-white'>UP TO 70% OFF</h3>
-              <h1 className='text-2xl lg:text-5xl text-white font-semibold'>Winter Restock Sale</h1>
-              <h3 className='text-base lg:text-3xl text-white'>Replenish your supply on makeup, hair care and more.</h3>
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <div className="text-center">
+              <h3 className="text-base font-semibold text-white lg:text-3xl">
+                UP TO 70% OFF
+              </h3>
+              <h1 className="text-2xl font-semibold text-white lg:text-5xl">
+                Winter Restock Sale
+              </h1>
+              <h3 className="text-base text-white lg:text-3xl">
+                Replenish your supply on makeup, hair care and more.
+              </h3>
             </div>
           </div>
-          <div className='absolute inset-0 bg-black opacity-75 z-10' />
-          <Image layout="intrinsic" className='absolute inset-0' height={820} width={1920} src="/perfume-3.jpg" alt="hero" />
+          <div className="absolute inset-0 z-10 bg-black opacity-75" />
+          <Image
+            layout="intrinsic"
+            className="absolute inset-0"
+            height={820}
+            width={1920}
+            src="/perfume-3.jpg"
+            alt="hero"
+          />
         </SwiperSlide>
       </Swiper>
 
       {/* Top reviewed */}
-      <div className='container mx-auto'>
+      <div className="container mx-auto">
         <Products heading="Top Reviewed" delay="5000" data={data} />
       </div>
 
-
-      <section className='my-16'>
+      <section className="my-16">
         <div className="container mx-auto">
           <Link href="/banner-1">
-            <a className='w-full h-full flex justify-center items-center mb-10'>
-              <Image className='intrinsic' src="/banner-1.jpg" height={450} width={1168} alt="banner-1" />
+            <a className="mb-10 flex h-full w-full items-center justify-center">
+              <Image
+                className="intrinsic"
+                src="/banner-1.jpg"
+                height={450}
+                width={1168}
+                alt="banner-1"
+              />
             </a>
           </Link>
         </div>
       </section>
 
       {/* Hot Sale */}
-      <div className='container mx-auto'>
-        <Products className="container mx-auto" heading="Hot Sale" delay="4500" data={data} />
+      <div className="container mx-auto">
+        <Products
+          className="container mx-auto"
+          heading="Hot Sale"
+          delay="4500"
+          data={data}
+        />
       </div>
 
       {/* banner section */}
-      <section className='my-16'>
+      <section className="my-16">
         <div className="container mx-auto">
           <Link href="/banner-1">
-            <a className='w-full h-full flex justify-center items-center mb-10'>
-              <Image className='intrinsic' src="/banner-2.jpg" height={450} width={1168} alt="banner-2" />
+            <a className="mb-10 flex h-full w-full items-center justify-center">
+              <Image
+                className="intrinsic"
+                src="/banner-2.jpg"
+                height={450}
+                width={1168}
+                alt="banner-2"
+              />
             </a>
           </Link>
         </div>
       </section>
 
       {/* blog section */}
-      <section className='my-16'>
+      <section className="my-16">
         <div className="container mx-auto">
-          <h1 className='text-xl lg:text-3xl font-semibold text-center mb-5'>From Our Blog</h1>
+          <h1 className="mb-5 text-center text-xl font-semibold lg:text-3xl">
+            From Our Blog
+          </h1>
           <Swiper
             modules={[Autoplay, Pagination, Navigation]}
             spaceBetween={10}
             autoplay={{
-              "delay": 4400,
-              "disableOnInteraction": false
+              delay: 4400,
+              disableOnInteraction: false,
             }}
             loop={true}
             centeredSlides={true}
@@ -131,7 +196,7 @@ export default function Home({ products }) {
             breakpoints={{
               640: {
                 width: 640,
-                slidesPerView: 1
+                slidesPerView: 1,
               },
               768: {
                 width: 768,
@@ -148,73 +213,133 @@ export default function Home({ products }) {
             }}
             className="mySwiper"
           >
-            <SwiperSlide className="flex justify-center items-center h-full">
-              <div className='w-full h-full'>
-                <div className='flex justify-center items-center'>
-                  <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={497} width={468} alt="category-1" src="/blog-1.jpg" />
+            <SwiperSlide className="flex h-full items-center justify-center">
+              <div className="h-full w-full">
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="normal-transition scale-100 hover:scale-110"
+                    layout="intrinsic"
+                    height={497}
+                    width={468}
+                    alt="category-1"
+                    src="/blog-1.jpg"
+                  />
                 </div>
                 <div className="text-center">
-                  <div className='flex flex-col'>
-                    <span className="text-base text-gray-500 mt-4 normal-transition">January 6, 2022</span>
-                    <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
+                  <div className="flex flex-col">
+                    <span className="normal-transition mt-4 text-base text-gray-500">
+                      January 6, 2022
+                    </span>
+                    <span className="normal-transition text-xl font-semibold text-gray-500">
+                      Rules For Press-On Nails
+                    </span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
-                   bg-purple-800 px-4 py-2'>Read More</a>
+                    <a
+                      className="normal-transition mx-auto mt-3 flex w-1/2 items-center justify-center bg-purple-800 px-4
+                   py-2 text-white hover:bg-purple-600"
+                    >
+                      Read More
+                    </a>
                   </Link>
                 </div>
               </div>
             </SwiperSlide>
 
-            <SwiperSlide className="flex justify-center items-center h-full">
-              <div className='w-full h-full'>
-                <div className='flex justify-center items-center'>
-                  <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={497} width={468} alt="category-1" src="/blog-2.jpg" />
+            <SwiperSlide className="flex h-full items-center justify-center">
+              <div className="h-full w-full">
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="normal-transition scale-100 hover:scale-110"
+                    layout="intrinsic"
+                    height={497}
+                    width={468}
+                    alt="category-1"
+                    src="/blog-2.jpg"
+                  />
                 </div>
                 <div className="text-center">
-                  <div className='flex flex-col'>
-                    <span className="text-base text-gray-500 mt-4 normal-transition">January 6, 2022</span>
-                    <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
+                  <div className="flex flex-col">
+                    <span className="normal-transition mt-4 text-base text-gray-500">
+                      January 6, 2022
+                    </span>
+                    <span className="normal-transition text-xl font-semibold text-gray-500">
+                      Rules For Press-On Nails
+                    </span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
-                   bg-purple-800 px-4 py-2'>Read More</a>
+                    <a
+                      className="normal-transition mx-auto mt-3 flex w-1/2 items-center justify-center bg-purple-800 px-4
+                   py-2 text-white hover:bg-purple-600"
+                    >
+                      Read More
+                    </a>
                   </Link>
                 </div>
               </div>
             </SwiperSlide>
 
-            <SwiperSlide className="flex justify-center items-center h-full">
-              <div className='w-full h-full'>
-                <div className='flex justify-center items-center'>
-                  <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={497} width={468} alt="category-1" src="/blog-3.jpg" />
+            <SwiperSlide className="flex h-full items-center justify-center">
+              <div className="h-full w-full">
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="normal-transition scale-100 hover:scale-110"
+                    layout="intrinsic"
+                    height={497}
+                    width={468}
+                    alt="category-1"
+                    src="/blog-3.jpg"
+                  />
                 </div>
                 <div className="text-center">
-                  <div className='flex flex-col'>
-                    <span className="text-base text-gray-500 mt-4 normal-transition">January 6, 2022</span>
-                    <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
+                  <div className="flex flex-col">
+                    <span className="normal-transition mt-4 text-base text-gray-500">
+                      January 6, 2022
+                    </span>
+                    <span className="normal-transition text-xl font-semibold text-gray-500">
+                      Rules For Press-On Nails
+                    </span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
-                   bg-purple-800 px-4 py-2'>Read More</a>
+                    <a
+                      className="normal-transition mx-auto mt-3 flex w-1/2 items-center justify-center bg-purple-800 px-4
+                   py-2 text-white hover:bg-purple-600"
+                    >
+                      Read More
+                    </a>
                   </Link>
                 </div>
               </div>
             </SwiperSlide>
 
-            <SwiperSlide className="flex justify-center items-center h-full">
-              <div className='w-full h-full'>
-                <div className='flex justify-center items-center'>
-                  <Image className="scale-100 hover:scale-110 normal-transition" layout='intrinsic' height={497} width={468} alt="category-1" src="/blog-4.jpg" />
+            <SwiperSlide className="flex h-full items-center justify-center">
+              <div className="h-full w-full">
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="normal-transition scale-100 hover:scale-110"
+                    layout="intrinsic"
+                    height={497}
+                    width={468}
+                    alt="category-1"
+                    src="/blog-4.jpg"
+                  />
                 </div>
                 <div className="text-center">
-                  <div className='flex flex-col'>
-                    <span className="text-base text-gray-500 mt-4 normal-transition">January 6, 2022</span>
-                    <span className='text-xl font-semibold text-gray-500 normal-transition'>Rules For Press-On Nails</span>
+                  <div className="flex flex-col">
+                    <span className="normal-transition mt-4 text-base text-gray-500">
+                      January 6, 2022
+                    </span>
+                    <span className="normal-transition text-xl font-semibold text-gray-500">
+                      Rules For Press-On Nails
+                    </span>
                   </div>
                   <Link href="/123">
-                    <a className='flex justify-center items-center w-1/2 mx-auto mt-3 hover:bg-purple-600 text-white normal-transition
-                   bg-purple-800 px-4 py-2'>Read More</a>
+                    <a
+                      className="normal-transition mx-auto mt-3 flex w-1/2 items-center justify-center bg-purple-800 px-4
+                   py-2 text-white hover:bg-purple-600"
+                    >
+                      Read More
+                    </a>
                   </Link>
                 </div>
               </div>
@@ -223,12 +348,12 @@ export default function Home({ products }) {
         </div>
       </section>
     </Layout>
-  )
+  );
 }
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const { data } = await axios.get('/products')
+  const { data } = await axios.get("/products");
   // Pass data to the page via props
-  return { props: { products: data } }
+  return { props: { products: data } };
 }

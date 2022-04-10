@@ -2,65 +2,65 @@
 
 export default function categories(req, res) {
   res.status(200).json({
-    status: 'success',
+    status: "success",
     code: 200,
     isSuccess: true,
     data: [
       {
         id: 1,
-        name: 'Featured',
+        name: "Featured",
         subCategories: [
           {
-            img: '/mega-menu-img-1.jpg',
-            name: 'New'
+            img: "/mega-menu-img-1.jpg",
+            name: "New",
           },
           {
-            img: '/best-seller.jpg',
-            name: 'Best Seller'
+            img: "/best-seller.jpg",
+            name: "Best Seller",
           },
           {
-            img: '/award-winner.jpg',
-            name: 'Award Winner'
+            img: "/award-winner.jpg",
+            name: "Award Winner",
           },
           {
-            img: '/wellness.jpg',
-            name: 'Wellness'
+            img: "/wellness.jpg",
+            name: "Wellness",
           },
           {
-            img: '/subscribe.jpg',
-            name: 'Subscribe & Save'
+            img: "/subscribe.jpg",
+            name: "Subscribe & Save",
           },
           {
-            img: '/home.jpg',
-            name: 'home'
+            img: "/home.jpg",
+            name: "home",
           },
-        ]
+        ],
       },
       {
         id: 2,
-        name: 'FRUIT PIGMENTED MAKEUP',
-        subCategories: []
+        name: "FRUIT PIGMENTED MAKEUP",
+        subCategories: [],
       },
       {
         id: 3,
-        name: 'SKIN CARE',
-        subCategories: []
+        name: "SKIN CARE",
+        subCategories: [],
       },
       {
         id: 4,
-        name: 'HAIR & BODY',
-        subCategories: []
+        name: "HAIR & BODY",
+        subCategories: [],
       },
       {
         id: 5,
-        name: 'GIFTS',
-        subCategories: []
+        name: "GIFTS",
+        subCategories: [],
       },
       {
         id: 6,
-        name: 'EXPLORE',
-        subCategories: []
-      }
-    ]
-  })
+        name: "EXPLORE",
+        subCategories: [],
+      },
+    ],
+  });
 }

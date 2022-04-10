@@ -1,5 +1,5 @@
 module.exports = {
-  mode: 'jit',
+  mode: "jit",
   important: true,
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -9,15 +9,13 @@ module.exports = {
     extend: {},
     container: {
       padding: {
-        DEFAULT: '1rem',
-        sm: '2rem',
-        lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
+        DEFAULT: "1rem",
+        sm: "0rem",
+        // lg: "4rem",
+        // xl: "5rem",
+        // "2xl": "6rem",
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
-}
+  plugins: [require("@tailwindcss/line-clamp")],
+};

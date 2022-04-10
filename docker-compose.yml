@@ -1,16 +1,18 @@
-version: '3.9'
+version: "3.9"
 
 services:
-    app-service:
-        build: .
-        container_name: perfume-shop
-        volumes:
-            - ./:/app
-            - /app/node_modules
-            - /app/.next
-        ports:
-            - 3000:3000
-        environment:
-            - NEXTAUTH_URL=http://localhost:3000/api/auth
-            - NEXT_PUBLIC_API_URL=https://all-in-one-db-test.herokuapp.com
-        command: yarn dev
+  app-service:
+    build: .
+    container_name: perfume-shop
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "19006:19006"
+      - "19001:19001"
+      - "19002:19002"
+    environment:
+      - NEXTAUTH_URL=http://localhost:3000/api/auth
+      - NEXT_PUBLIC_API_URL=https://all-in-one-db-test.herokuapp.com
+    command: yarn dev
