@@ -73,7 +73,7 @@ const Nav = () => {
       document.body.style.overflowY = "hidden";
       setCartPanelHeight(
         cartHeaderHeight?.current.offsetHeight +
-          cartFooterHeight?.current.offsetHeight
+        cartFooterHeight?.current.offsetHeight
       );
     } else {
       document.body.style.overflowY = "auto";
@@ -136,22 +136,19 @@ const Nav = () => {
               onBlur={() =>
                 searchRef.current.value !== "" ? "" : setSearchOpen(false)
               }
-              className={`${
-                searchOpen
-                  ? `${
-                      isMobileHeight
-                        ? "absolute left-0 right-0 z-10 h-10"
-                        : "w-auto"
-                    } normal-transition rounded-full border border-purple-800 bg-purple-800 shadow-lg`
+              className={`${searchOpen
+                  ? `${isMobileHeight
+                    ? "absolute left-0 right-0 z-10 h-10"
+                    : "w-auto"
+                  } normal-transition rounded-full border border-purple-800 bg-purple-800 shadow-lg`
                   : "normal-transition group flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-purple-800 bg-transparent lg:hover:bg-purple-800"
-              }`}
+                }`}
             >
               <div
-                className={`${
-                  searchOpen
+                className={`${searchOpen
                     ? "mx-3 flex h-full items-center justify-center py-2 "
                     : ""
-                }`}
+                  }`}
               >
                 <i
                   onClick={() => setSearchOpen(!searchOpen)}
@@ -174,7 +171,7 @@ const Nav = () => {
           <div className="text-center">
             {/* <Image src="/logo-2.png" height={300} width={1400} layout="intrinsic" alt="logo-img" /> */}
             <h1>
-              <Link href="/">
+              <Link href="/homepage">
                 <a>
                   <span className="block text-sm font-bold text-white lg:text-3xl">
                     PERFUME BANGLADESH
@@ -252,13 +249,12 @@ const Nav = () => {
           </div>
         </div>
         <nav
-          className={`flex items-center justify-center ${
-            isMobileHeight && stickyNav
+          className={`flex items-center justify-center ${isMobileHeight && stickyNav
               ? "absolute left-0 top-0 right-0 bg-gradient-to-r from-purple-800 to-purple-300"
               : !isMobileHeight && stickyNav
-              ? "animate__animated animate__fadeInDown fixed left-0 right-0 top-0 z-20 w-screen bg-gradient-to-r from-purple-800 to-purple-300 py-3 shadow-xl"
-              : "mt-3 "
-          } text-white`}
+                ? "animate__animated animate__fadeInDown fixed left-0 right-0 top-0 z-20 w-screen bg-gradient-to-r from-purple-800 to-purple-300 py-3 shadow-xl"
+                : "mt-3 "
+            } text-white`}
         >
           {navOpen && (
             <i
@@ -269,11 +265,10 @@ const Nav = () => {
           <ul
             className={
               isMobileHeight
-                ? `${
-                    isMobileHeight && navOpen
-                      ? "animate__animated animate__slideInLeft container absolute top-0 left-0 bottom-0 z-10 mx-auto flex h-screen w-full list-none flex-col overflow-auto bg-white py-8 text-purple-800 opacity-100 shadow-lg backdrop-blur-lg"
-                      : "animate__animated animate__slideInRight absolute top-0 bottom-0 -left-full z-10 bg-white"
-                  } mb-0`
+                ? `${isMobileHeight && navOpen
+                  ? "animate__animated animate__slideInLeft container absolute top-0 left-0 bottom-0 z-10 mx-auto flex h-screen w-full list-none flex-col overflow-auto bg-white py-8 text-purple-800 opacity-100 shadow-lg backdrop-blur-lg"
+                  : "animate__animated animate__slideInRight absolute top-0 bottom-0 -left-full z-10 bg-white"
+                } mb-0`
                 : "mb-0 flex list-none lg:flex-row lg:items-center"
             }
           >
